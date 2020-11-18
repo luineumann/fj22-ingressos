@@ -3,6 +3,7 @@ package br.com.caelum.ingresso.model;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +17,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 
 /**
  * Created by nando on 03/03/17.
@@ -30,6 +32,7 @@ public class Sala {
 	private String nome;
 
 	@OneToMany(fetch = FetchType.EAGER)
+//	@OrderBy("fileira asc, posicao asc")
 	private Set<Lugar> lugares = new HashSet<>();
 
 	private BigDecimal preco = BigDecimal.ZERO;
@@ -75,9 +78,25 @@ public class Sala {
 	}
 
 	public Map<String, List<Lugar>> getMapaDeLugares() {
+
+		Comparator<Lugar> ordemDeFileira = Comparator.comparing(Lugar::getFileira);
+    	Comparator<Lugar> ordemDePosicao = Comparator.comparing(Lugar::getPosicao);
+    	
+    	Comparator<Lugar> ordenadorComposto = ordemDeFileira.thenComparing(ordemDePosicao);
+    	
+        if(!this.lugares.isEmpty()){
+            return this.lugares.stream()
+            		.sorted(ordenadorComposto)
+            		.collect(Collectors.groupingBy(Lugar::getFileira,Collectors.toList()));
+        }
+		
+/*		
+		código anterior - pela apostila
 		if (!this.lugares.isEmpty()) {
 			return this.lugares.stream().collect(Collectors.groupingBy(Lugar::getFileira, Collectors.toList()));
 		}
+		
+*/
 		return Collections.emptyMap();
 	}
 
