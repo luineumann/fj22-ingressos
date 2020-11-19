@@ -1,8 +1,8 @@
 package br.com.caelum.ingresso.controller;
 
+import javax.inject.Inject;
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
@@ -19,16 +19,16 @@ import br.com.caelum.ingresso.model.form.CarrinhoForm;
 
 @Controller
 public class CompraController {
-	@Autowired
+	@Inject // pode usar o @Inject no lugar do @Autowired
 	private SessaoDao sessaoDao;
 
-	@Autowired
+	@Inject
 	private LugarDao lugarDao;
 
-	@Autowired
+	@Inject
 	private CompraDao compraDao;
 	
-	@Autowired
+	@Inject
 	private Carrinho carrinho;
 
 	@PostMapping("/compra/ingressos")
