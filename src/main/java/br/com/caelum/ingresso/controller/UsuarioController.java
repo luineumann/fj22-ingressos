@@ -3,6 +3,7 @@ package br.com.caelum.ingresso.controller;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -67,7 +68,7 @@ public class UsuarioController {
 	public ModelAndView cadastrar(ConfirmacaoLoginForm form) {
 		ModelAndView view = new ModelAndView("redirect:/login");
 		if (form.isValid()) {
-			Usuario usuario =   form.toUsuario(usuarioDao, passwordEncoder);
+			Usuario usuario =   form.toUsuario(usuarioDao, new BCryptPasswordEncoder());
 			usuarioDao.save(usuario);
 			view.addObject("msg", "Usuario cadastrado com sucesso!");
 			return view;

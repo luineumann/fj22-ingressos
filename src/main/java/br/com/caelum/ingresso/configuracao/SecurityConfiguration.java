@@ -25,6 +25,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
+		System.out.println("CONFIGUROU SECURITY");
 		http
 			.csrf().disable().authorizeRequests()
 				.antMatchers("/admin/**").hasRole("ADMIN")
@@ -38,8 +39,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.authenticated()
 			.and()
 				.formLogin()
-					.usernameParameter("email")
 					.loginPage("/login")
+					.usernameParameter("email")
 					.permitAll()
 			.and()
 				.logout()
